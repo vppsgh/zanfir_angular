@@ -17,3 +17,6 @@ import { NewMessageComponent } from './new-message.component';
   providers: [WebService]
 })
 export class AppModule { }
+
+
+// Test for git commit and PR
