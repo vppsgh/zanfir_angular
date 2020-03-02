@@ -1,34 +1,38 @@
 import { Component } from '@angular/core'
 import { WebService } from './web.service'
+// import { MessagesComponent } from './messages.component';
 
 @Component({
     selector: 'new-message',
     template: `
-        <md-card class="card">
-            <md-card-content>
-                <md-input-container>
-                    <input [(ngModel)]="message.owner" mdInput placeholder="Name">
-                </md-input-container>
-                <md-input-container>
-                    <textarea [(ngModel)]="message.text" mdInput placeholder="Message"></textarea>
-                </md-input-container>
-                <md-card-actions>
-                    <button (click)="post()" md-button color="primary">POST</button>
-                </md-card-actions>
-            </md-card-content>
-        </md-card>
+        <mat-card class="card">
+        <mat-card-content>
+            <mat-form-field>
+                <input [(ngModel)]="message.owner" matInput placeholder="Name">
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <textarea [(ngModel)]="message.text" matInput placeholder="Message"></textarea>
+            </mat-form-field>
+            <mat-card-actions>
+                <button (click)="post()" mat-button color="primary">POST</button>
+            </mat-card-actions>
+        </mat-card-content>
+        </mat-card>
     `
 })
+
 export class NewMessageComponent {
 
     constructor(private webService : WebService) {}
 
     message = {
-        owner: "",
-        text: ""
+        owner : "",
+        text : ""
     }
 
     post() {
-        this.webService.postMessage(this.message);
+            console.log(this.message);
+            this.webService.postMessage(this.message);
     }
 }
