@@ -2,24 +2,26 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 
-var messages = [{text: 'some text', owner: 'Tim'},{text: 'other message', owner: 'Jane'}];
-
 app.use(bodyParser.json());
-app.use((req, res, next) => {
+app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
-})
+    });
+
+var messages = [{text : "some text", owner : "s_vova"}, {text : "another text", owner : "s_vovan"}];
 
 var api = express.Router();
 
 api.get('/messages', (req, res) => {
-    res.json(messages);
+    res.send(messages);
 })
 
-api.post('/message', (req, res) => {
+api.post('/messages', (req, res) => {
+    console.log(req.body);
     messages.push(req.body);
-    res.json(req.body);
+    // res.sendStatus(200);
+    res.send(req.body);
 })
 
 app.use('/api', api);
