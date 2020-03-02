@@ -3,26 +3,32 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 // import 'rxjs/add/operator/toPromise';
+import { Subject } from 'rxjs';
 
 
 @Injectable()
 export class WebService {
     BASE_URL = 'http://localhost:63145/api';
 
-    messages = [];
+    private messageStore = [];
+
+    private messageSubject = new Subject();
+
+    messages = this.messageSubject.asObservable();
 
     constructor(private http: HttpClient, private sb : MatSnackBar) {
-        this.getMessages();
+        // this.getMessages();
     }
 
-    getMessages() {
-            this.http.get<any>(this.BASE_URL + '/messages')
+    getMessages(user) {
+            user = (user) ? '/' + user : '';
+            this.http.get<any>(this.BASE_URL + '/messages' + user)
             .subscribe(
-                (data) => {
-                this.messages = data;
-                console.log(JSON.stringify(data));
-                },
-                (error) => { 
+                response => {
+                    console.log(response);
+                    this.messageStore = response;
+                    this.messageSubject.next(this.messageStore);
+                }, error => { 
                     this.handleError("Unable to get messages");
                 }
             )
@@ -37,7 +43,8 @@ export class WebService {
         this.http.post<any>(this.BASE_URL + '/messages', message)
             .subscribe(
                 (data) => {
-                this.messages.push(data);
+                this.messageStore.push(data);
+                this.messageSubject.next(this.messageStore);
                 console.log("aa1" + data + "aa2");
                 },
                 (error) => { 
