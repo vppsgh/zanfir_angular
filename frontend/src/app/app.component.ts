@@ -7,8 +7,7 @@ import { NavComponent } from './nav.component';
   selector: 'app-root',
   template: `
     <nav></nav>
-    <new-message></new-message>
-    <messages></messages>
+    <router-outlet></router-outlet>
   `,
   styleUrls: ['./app.component.css']
 })
