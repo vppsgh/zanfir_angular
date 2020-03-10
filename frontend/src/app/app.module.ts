@@ -13,10 +13,11 @@ import { MessagesComponent } from './messages.component';
 import { WebService } from './web.service';
 import { HttpClientModule } from '@angular/common/http';
 import { NewMessageComponent } from './new-message.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavComponent } from './nav.component';
 import { HomeComponent } from './home.component';
 import { RegisterComponent } from './register.component';
+import { AuthService } from './auth.service'
 
 var routes = [{
   path: '',
@@ -51,9 +52,10 @@ var routes = [{
     MaterialModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [WebService],
+  providers: [WebService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

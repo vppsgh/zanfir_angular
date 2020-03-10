@@ -45,7 +45,6 @@ export class WebService {
                 (data) => {
                 this.messageStore.push(data);
                 this.messageSubject.next(this.messageStore);
-                console.log("aa1" + data + "aa2");
                 },
                 (error) => { 
                     this.handleError("Unable to post message");
