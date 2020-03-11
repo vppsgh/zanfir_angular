@@ -11,7 +11,7 @@ app.use(function(req, res, next) {
     });
 
 var messages = [{text : "some text", owner : "s_vova"}, {text : "another text", owner : "s_vovan"}];
-var users = [];
+var users = [{firstName: 'a', email: 'a', password: 'a', id:0}];
 
 var api = express.Router();
 var auth = express.Router();
@@ -33,16 +33,35 @@ api.post('/messages', (req, res) => {
     res.send(req.body);
 })
 
+auth.post('/login', (req,res)=> {
+    console.log(req.body);
+    var user = users.find( user => user.email == req.body.email);
+
+    if(!user) 
+        sendAuthError(res);
+    if (user.password == req.body.password)
+        sendToken(user,res);
+    else
+        sendAuthError(res);
+})
+
 auth.post('/register', (req,res)=> {
     var index = users.push(req.body) - 1;
     var user = users[index];
     user.id = index;
 
-    var token = jwt.sign(user.id, '123');
-    res.json({firstName : user.firstName, token});
-    console.log(res);
+    sendToken(user,res);
 
 })
+
+function sendToken(user, res) {
+    var token = jwt.sign(user.id, '123');
+    res.json({firstName : user.firstName, token});
+}
+
+function sendAuthError(res) {
+    return res.json({ success: false, message: 'email or password incorrect'});
+}
 
 app.use('/api', api);
 app.use('/auth', auth);
