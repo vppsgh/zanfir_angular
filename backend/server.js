@@ -1,5 +1,8 @@
+var path = require('path');
 var express = require('express');
 var app = express();
+
+app.use(express.static(path.join(__dirname,'/frontend')));
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 
@@ -65,5 +68,9 @@ function sendAuthError(res) {
 
 app.use('/api', api);
 app.use('/auth', auth);
+
+app.get('*', (req,res) => {
+    res.sendFile(path.join(__dirname + '/frontend/index.html'));
+})
 
 app.listen(63145);
